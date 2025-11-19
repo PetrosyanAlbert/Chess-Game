@@ -1,0 +1,56 @@
+body {
+  margin: 0;
+  background-image: url('../assets/chess-background.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  text-align: center;
+}
+
+h1 {
+  color: #f0d9b5;
+  font-size: 48px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.buttons {
+  margin-top: 40px;
+}
+
+.btn {
+  padding: 15px 30px;
+  font-size: 24px;
+  margin: 0 20px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  color: #f0d9b5;
+  background-color: #8b4513;
+  transition: transform 0.3s ease;
+}
+
+.btn:hover {
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1.1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1.1);
+  }
+}
+

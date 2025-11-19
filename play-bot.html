@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Play with Bot</title>
+  <link rel="stylesheet" href="styles/game.css">
+</head>
+<body>
+  <!-- Шахматная игра -->
+  <div class="chess-container">
+    <!-- Левая часть: только доска -->
+    <div class="chess-main">
+      <div class="chessboard" id="chessboard">
+        <!-- Доска будет создана через JavaScript -->
+      </div>
+    </div>
+    
+    <!-- Правая часть: панель с заголовками и кнопками -->
+    <div class="game-controls">
+      <h2>Play with Bot</h2>
+      <div class="turn-indicator">
+        <span id="currentTurn">White's turn</span>
+      </div>
+      <div class="bot-difficulty">
+        <label for="difficulty">Bot Level:</label>
+        <select id="difficulty" class="difficulty-select">
+          <option value="easy">Easy</option>
+          <option value="medium" selected>Medium</option>
+          <option value="hard">Hard</option>
+        </select>
+      </div>
+      <button id="resetGame" class="control-btn">New Game</button>
+      <button id="undoMove" class="control-btn">Undo</button>
+      <button id="backToMenu" class="control-btn back-btn">Back to Main Menu</button>
+    </div>
+  </div>
+
+  <!-- Подключение всех модулей игры -->
+  <script src="src/Board.js"></script>
+  <script src="src/Piece.js"></script>
+  <script src="src/Rules.js"></script>
+  <script src="src/Game.js"></script>
+  <script src="src/Bot.js"></script>
+  <script src="src/BotGame.js"></script>
+  <script src="src/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,480 @@
+/* Базовые стили */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: 
+    /* Fallback градиент если изображение не загрузится */
+    radial-gradient(circle at 30% 20%, rgba(139, 69, 19, 0.2) 0%, transparent 50%),
+    radial-gradient(circle at 70% 80%, rgba(101, 67, 33, 0.2) 0%, transparent 50%),
+    linear-gradient(135deg, #e6d5b7 0%, #d4bc96 25%, #c2a882 50%, #b09574 75%, #9e8266 100%);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Добавляем размытый фон */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('../assets/IMG_6821.JPG') center/cover no-repeat fixed;
+  filter: blur(5px);
+  z-index: -1;
+}
+
+/* Добавляем тонкую текстуру */
+body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 2px,
+      rgba(139, 69, 19, 0.02) 2px,
+      rgba(139, 69, 19, 0.02) 4px
+    );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Контейнер шахмат */
+.chess-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0;
+  padding: 0;
+  background: transparent;
+  backdrop-filter: none;
+  border-radius: 0;
+  box-shadow: none;
+  border: none;
+  position: relative;
+  z-index: 2;
+  width: 100vw;
+  min-height: 100vh;
+}
+
+/* Левая часть с заголовком и доской */
+.chess-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 20px 20px 20px;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  box-shadow: 
+    0 20px 40px rgba(139, 69, 19, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(139, 69, 19, 0.1);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.game-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.game-header h2 {
+  color: #654321;
+  font-size: 2.2em;
+  margin-bottom: 15px;
+  text-shadow: 0 2px 4px rgba(139, 69, 19, 0.2);
+  font-weight: 300;
+  letter-spacing: 1px;
+}
+
+.turn-indicator {
+  background: linear-gradient(145deg, #f8f5f0, #ede4d3);
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-weight: 600;
+  font-size: 1em;
+  color: #654321;
+  box-shadow: 
+    0 4px 12px rgba(139, 69, 19, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(139, 69, 19, 0.1);
+  margin-bottom: 25px;
+}
+
+/* Шахматная доска */
+.chessboard {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  width: 500px;
+  height: 500px;
+  border: 6px solid #8B4513;
+  border-radius: 12px;
+  box-shadow: 
+    0 12px 30px rgba(139, 69, 19, 0.4),
+    inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.square {
+  width: 62.5px;
+  height: 62.5px;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.square.light {
+  background-color: #f0d9b5;
+}
+
+.square.dark {
+  background-color: #b58863;
+}
+
+.square.possible-move::after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0.6;
+  }
+}
+
+/* Шахматные фигуры */
+.piece {
+  font-size: 2.8em;
+  user-select: none;
+  transition: transform 0.1s ease;
+  font-weight: 400;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  line-height: 1;
+  width: auto;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.piece:hover {
+  transform: translate(-50%, -50%) scale(1.05);
+}
+
+/* Белые фигуры - белый контур */
+.piece.white {
+  color: transparent;
+  -webkit-text-stroke: 1.5px #ffffff;
+  filter: drop-shadow(1px 1px 3px rgba(0, 0, 0, 0.8));
+  
+  /* Коррекция позиционирования для белых фигур */
+  transform: translate(-50%, -52%);
+  
+  /* Fallback для браузеров без поддержки text-stroke */
+  text-shadow: 
+    -1px -1px 0 #ffffff,
+    1px -1px 0 #ffffff,
+    -1px 1px 0 #ffffff,
+    1px 1px 0 #ffffff,
+    -1.2px -1.2px 0 #ffffff,
+    1.2px -1.2px 0 #ffffff,
+    -1.2px 1.2px 0 #ffffff,
+    1.2px 1.2px 0 #ffffff,
+    -0.8px 0 0 #ffffff,
+    0.8px 0 0 #ffffff,
+    0 -0.8px 0 #ffffff,
+    0 0.8px 0 #ffffff;
+}
+
+/* Коррекция при наведении для белых фигур */
+.piece.white:hover {
+  transform: translate(-50%, -52%) scale(1.05);
+}
+
+/* Черные фигуры - черный контур (такой же стиль как белые) */
+.piece.black {
+  color: transparent;
+  -webkit-text-stroke: 1.5px #2c2c2c;
+  filter: drop-shadow(1px 1px 3px rgba(0, 0, 0, 0.8));
+  
+  /* Fallback для браузеров без поддержки text-stroke */
+  text-shadow: 
+    -1px -1px 0 #2c2c2c,
+    1px -1px 0 #2c2c2c,
+    -1px 1px 0 #2c2c2c,
+    1px 1px 0 #2c2c2c,
+    -1.2px -1.2px 0 #2c2c2c,
+    1.2px -1.2px 0 #2c2c2c,
+    -1.2px 1.2px 0 #2c2c2c,
+    1.2px 1.2px 0 #2c2c2c,
+    -0.8px 0 0 #2c2c2c,
+    0.8px 0 0 #2c2c2c,
+    0 -0.8px 0 #2c2c2c,
+    0 0.8px 0 #2c2c2c;
+}
+
+/* Для браузеров с поддержкой text-stroke убираем text-shadow */
+@supports (-webkit-text-stroke: 1px #ffffff) {
+  .piece.white {
+    text-shadow: none;
+  }
+  
+  .piece.black {
+    text-shadow: none;
+  }
+}
+
+/* Контрольные кнопки */
+.game-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  padding: 30px 25px;
+  position: fixed;
+  right: 20px;
+  top: calc(50% - 250px);
+  z-index: 3;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  width: 280px;
+  height: 500px;
+}
+
+/* Заголовок в панели управления */
+.game-controls h2 {
+  color: #f5f5dc;
+  font-size: 1.8em;
+  margin-bottom: 15px;
+  text-shadow: 
+    0 0 10px rgba(245, 245, 220, 0.3),
+    0 2px 4px rgba(0, 0, 0, 0.3);
+  font-weight: 300;
+  letter-spacing: 1px;
+  text-align: center;
+  background: linear-gradient(135deg, #f5f5dc, #fff8dc);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  position: relative;
+}
+
+/* Декоративная линия под заголовком */
+.game-controls h2::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #f5f5dc, transparent);
+  border-radius: 2px;
+}
+
+/* Селектор сложности бота */
+.bot-difficulty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.bot-difficulty label {
+  color: #f5f5dc;
+  font-size: 1em;
+  font-weight: 500;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.difficulty-select {
+  padding: 8px 15px;
+  background: rgba(248, 245, 240, 0.9);
+  color: #654321;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 25px;
+  font-size: 0.9em;
+  font-weight: 500;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  min-width: 100px;
+  text-align: center;
+}
+
+.difficulty-select:hover {
+  background: rgba(245, 241, 235, 0.95);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.difficulty-select:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(245, 245, 220, 0.4);
+}
+
+.control-btn {
+  padding: 15px 25px;
+  background: linear-gradient(145deg, rgba(248, 245, 240, 0.9), rgba(237, 228, 211, 0.9));
+  color: #654321;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50px;
+  font-size: 1em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  min-width: 140px;
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+}
+
+.control-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.6s;
+}
+
+.control-btn:hover::before {
+  left: 100%;
+}
+
+.control-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 
+    0 12px 35px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  background: linear-gradient(145deg, rgba(245, 241, 235, 0.95), rgba(232, 220, 192, 0.95));
+}
+
+.control-btn:active {
+  transform: translateY(0);
+  box-shadow: 
+    0 2px 8px rgba(139, 69, 19, 0.2),
+    inset 0 2px 4px rgba(139, 69, 19, 0.1);
+}
+
+/* Специальный стиль для кнопки возврата */
+.back-btn {
+  background: linear-gradient(145deg, #f0e6d6, #e0d0c0);
+  color: #8B4513;
+  border: 1px solid rgba(139, 69, 19, 0.3);
+  margin-top: 10px;
+  font-size: 0.95em;
+}
+
+.back-btn:hover {
+  background: linear-gradient(145deg, #ede0d0, #dcc8b8);
+  color: #654321;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .chessboard {
+    width: 320px;
+    height: 320px;
+  }
+  
+  .square {
+    width: 40px;
+    height: 40px;
+    font-size: 1.8em;
+  }
+  
+  .piece {
+    font-size: 1.8em;
+    -webkit-text-stroke: 2px;
+  }
+  
+  .piece.white {
+    -webkit-text-stroke-color: #ffffff;
+    text-shadow: 
+      -1px -1px 0 #ffffff,
+      1px -1px 0 #ffffff,
+      -1px 1px 0 #ffffff,
+      1px 1px 0 #ffffff;
+  }
+  
+  .piece.black {
+    -webkit-text-stroke-color: #2c2c2c;
+    text-shadow: 
+      -1px -1px 0 #2c2c2c,
+      1px -1px 0 #2c2c2c,
+      -1px 1px 0 #2c2c2c,
+      1px 1px 0 #2c2c2c;
+  }
+  
+  @supports (-webkit-text-stroke: 1px #ffffff) {
+    .piece.white {
+      text-shadow: none;
+    }
+    
+    .piece.black {
+      text-shadow: none;
+    }
+  }
+  
+  .game-header h2 {
+    font-size: 2em;
+  }
+  
+  .chess-container {
+    padding: 15px;
+  }
+}
